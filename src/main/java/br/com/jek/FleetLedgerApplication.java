@@ -9,5 +9,4 @@ public class FleetLedgerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(FleetLedgerApplication.class, args);
 	}
-
 }

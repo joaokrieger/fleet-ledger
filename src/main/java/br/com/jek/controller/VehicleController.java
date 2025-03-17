@@ -21,7 +21,7 @@ public class VehicleController {
         return vehicleService.findAll();
     }
 
-    @GetMapping(value = "{id}",
+    @GetMapping(value = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public VehicleDTO findById(@PathVariable("id") Long id){
         return vehicleService.findById(id);

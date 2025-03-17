@@ -19,9 +19,6 @@ public class Route implements Serializable {
     @Column(nullable = false)
     private String destination;
 
-    @Column(precision = 10, scale = 2, nullable = false)
-    private Double distance;
-
     public Route() {
     }
 
@@ -49,23 +46,15 @@ public class Route implements Serializable {
         this.destination = destination;
     }
 
-    public Double getDistance() {
-        return distance;
-    }
-
-    public void setDistance(Double distance) {
-        this.distance = distance;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Route route = (Route) o;
-        return Objects.equals(getId(), route.getId()) && Objects.equals(getOrigin(), route.getOrigin()) && Objects.equals(getDestination(), route.getDestination()) && Objects.equals(getDistance(), route.getDistance());
+        return Objects.equals(getId(), route.getId()) && Objects.equals(getOrigin(), route.getOrigin()) && Objects.equals(getDestination(), route.getDestination());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getOrigin(), getDestination(), getDistance());
+        return Objects.hash(getId(), getOrigin(), getDestination());
     }
 }
