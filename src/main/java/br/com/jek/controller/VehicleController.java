@@ -4,10 +4,8 @@ import br.com.jek.data.dto.VehicleDTO;
 import br.com.jek.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,5 +25,25 @@ public class VehicleController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public VehicleDTO findById(@PathVariable("id") Long id){
         return vehicleService.findById(id);
+    }
+
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public VehicleDTO create(@RequestBody VehicleDTO vehicleDTO){
+        return vehicleService.create(vehicleDTO);
+    }
+
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public VehicleDTO update(@RequestBody VehicleDTO vehicleDTO){
+        return vehicleService.update(vehicleDTO);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") Long id){
+        vehicleService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }
