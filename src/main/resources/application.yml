@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: fleet-ledger
+  datasource:
+    url: jdbc:postgresql://localhost:5432/fleet_ledger?useTimezone=true&serverTimezone=UTC
+    username: postgres
+    password: 123456
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+    show-sql: false
+    open-in-view: false
