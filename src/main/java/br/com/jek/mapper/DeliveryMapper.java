@@ -1,6 +1,7 @@
 package br.com.jek.mapper;
 
-import br.com.jek.data.dto.DeliveryDTO;
+import br.com.jek.data.dto.delivery.DeliveryRequestDTO;
+import br.com.jek.data.dto.delivery.DeliveryResponseDTO;
 import br.com.jek.model.Delivery;
 import br.com.jek.model.Driver;
 import br.com.jek.model.Route;
@@ -12,19 +13,16 @@ public class DeliveryMapper {
 
     private static final Mapper mapper = DozerBeanMapperBuilder.buildDefault();
 
-    public static Delivery toEntity(DeliveryDTO deliveryDTO, Vehicle vehicle, Driver driver, Route route) {
-        Delivery delivery = mapper.map(deliveryDTO, Delivery.class);
+    public static Delivery toEntity(DeliveryRequestDTO deliveryRequestDTO, Vehicle vehicle, Driver driver, Route route) {
+        Delivery delivery = mapper.map(deliveryRequestDTO, Delivery.class);
         delivery.setVehicle(vehicle);
         delivery.setDriver(driver);
         delivery.setRoute(route);
         return delivery;
     }
 
-    public static DeliveryDTO toDTO(Delivery delivery) {
-        DeliveryDTO deliveryDTO = mapper.map(delivery, DeliveryDTO.class);
-        deliveryDTO.setVehicleId(delivery.getVehicle().getId());
-        deliveryDTO.setDriverId(delivery.getDriver().getId());
-        deliveryDTO.setRouteId(delivery.getRoute().getId());
-        return deliveryDTO;
+    public static DeliveryResponseDTO toDTO(Delivery delivery) {
+        DeliveryResponseDTO deliveryResponseDTO = mapper.map(delivery, DeliveryResponseDTO.class);
+        return deliveryResponseDTO;
     }
 }

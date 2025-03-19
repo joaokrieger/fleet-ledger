@@ -1,11 +1,11 @@
-package br.com.jek.data.dto;
+package br.com.jek.data.dto.delivery;
 
 import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class DeliveryDTO implements Serializable {
+public class DeliveryRequestDTO implements Serializable {
 
     private Long id;
 
@@ -22,7 +22,7 @@ public class DeliveryDTO implements Serializable {
 
     private LocalDateTime arrivalTime;
 
-    public DeliveryDTO() {
+    public DeliveryRequestDTO() {
     }
 
     public Long getId() {

@@ -1,6 +1,7 @@
 package br.com.jek.service;
 
-import br.com.jek.data.dto.DeliveryDTO;
+import br.com.jek.data.dto.delivery.DeliveryRequestDTO;
+import br.com.jek.data.dto.delivery.DeliveryResponseDTO;
 import br.com.jek.exception.ResourceNotFoundException;
 import br.com.jek.mapper.DeliveryMapper;
 import br.com.jek.model.Delivery;
@@ -33,48 +34,48 @@ public class DeliveryService {
     @Autowired
     private RouteRepository routeRepository;
 
-    public List<DeliveryDTO> findAll() {
+    public List<DeliveryResponseDTO> findAll() {
         List<Delivery> deliveries = deliveryRepository.findAll();
         return deliveries.stream()
                 .map(DeliveryMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
-    public DeliveryDTO findById(Long id) {
+    public DeliveryResponseDTO findById(Long id) {
         var entity = deliveryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
         return DeliveryMapper.toDTO(entity);
     }
 
-    public DeliveryDTO create(DeliveryDTO deliveryDTO) {
+    public DeliveryResponseDTO create(DeliveryRequestDTO deliveryRequestDTO) {
 
-        Vehicle vehicle = vehicleRepository.findById(deliveryDTO.getVehicleId())
+        Vehicle vehicle = vehicleRepository.findById(deliveryRequestDTO.getVehicleId())
                 .orElseThrow(() -> new ResourceNotFoundException("Vehicle not found!"));
 
-        Driver driver = driverRepository.findById(deliveryDTO.getDriverId())
+        Driver driver = driverRepository.findById(deliveryRequestDTO.getDriverId())
                 .orElseThrow(() -> new ResourceNotFoundException("Driver not found!"));
 
-        Route route = routeRepository.findById(deliveryDTO.getRouteId())
+        Route route = routeRepository.findById(deliveryRequestDTO.getRouteId())
                 .orElseThrow(() -> new ResourceNotFoundException("Route not found!"));
 
-        Delivery delivery = DeliveryMapper.toEntity(deliveryDTO, vehicle, driver, route);
+        Delivery delivery = DeliveryMapper.toEntity(deliveryRequestDTO, vehicle, driver, route);
         delivery.setDepartureTime(LocalDateTime.now());
 
         return DeliveryMapper.toDTO(deliveryRepository.save(delivery));
     }
 
-    public DeliveryDTO update(DeliveryDTO deliveryDTO) {
+    public DeliveryResponseDTO update(DeliveryRequestDTO deliveryRequestDTO) {
 
-        Delivery delivery = deliveryRepository.findById(deliveryDTO.getId())
+        Delivery delivery = deliveryRepository.findById(deliveryRequestDTO.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
 
-        Vehicle vehicle = vehicleRepository.findById(deliveryDTO.getVehicleId())
+        Vehicle vehicle = vehicleRepository.findById(deliveryRequestDTO.getVehicleId())
                 .orElseThrow(() -> new ResourceNotFoundException("Vehicle not found!"));
 
-        Driver driver = driverRepository.findById(deliveryDTO.getDriverId())
+        Driver driver = driverRepository.findById(deliveryRequestDTO.getDriverId())
                 .orElseThrow(() -> new ResourceNotFoundException("Driver not found!"));
 
-        Route route = routeRepository.findById(deliveryDTO.getRouteId())
+        Route route = routeRepository.findById(deliveryRequestDTO.getRouteId())
                 .orElseThrow(() -> new ResourceNotFoundException("Route not found!"));
 
         delivery.setVehicle(vehicle);
@@ -90,7 +91,7 @@ public class DeliveryService {
         deliveryRepository.delete(delivery);
     }
 
-    public DeliveryDTO markAsDelivered(Long id) {
+    public DeliveryResponseDTO markAsDelivered(Long id) {
         Delivery delivery = deliveryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
         delivery.setArrivalTime(LocalDateTime.now());

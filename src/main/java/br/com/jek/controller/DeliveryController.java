@@ -1,6 +1,7 @@
 package br.com.jek.controller;
 
-import br.com.jek.data.dto.DeliveryDTO;
+import br.com.jek.data.dto.delivery.DeliveryRequestDTO;
+import br.com.jek.data.dto.delivery.DeliveryResponseDTO;
 import br.com.jek.service.DeliveryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,26 +19,26 @@ public class DeliveryController {
     private DeliveryService deliveryService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<DeliveryDTO> findAll(){
+    public List<DeliveryResponseDTO> findAll(){
         return deliveryService.findAll();
     }
 
     @GetMapping(value = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public DeliveryDTO findById(@PathVariable("id") Long id){
+    public DeliveryResponseDTO findById(@PathVariable("id") Long id){
         return deliveryService.findById(id);
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public DeliveryDTO create(@RequestBody @Valid DeliveryDTO deliveryDTO){
-        return deliveryService.create(deliveryDTO);
+    public DeliveryResponseDTO create(@RequestBody @Valid DeliveryRequestDTO deliveryRequestDTO){
+        return deliveryService.create(deliveryRequestDTO);
     }
 
     @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public DeliveryDTO update(@RequestBody @Valid DeliveryDTO deliveryDTO){
-        return deliveryService.update(deliveryDTO);
+    public DeliveryResponseDTO update(@RequestBody @Valid DeliveryRequestDTO deliveryRequestDTO){
+        return deliveryService.update(deliveryRequestDTO);
     }
 
     @DeleteMapping(value = "/{id}")
@@ -47,7 +48,7 @@ public class DeliveryController {
     }
 
     @PutMapping("/{id}/mark-as-delivered")
-    public DeliveryDTO markAsDelivered(@PathVariable Long id) {
+    public DeliveryResponseDTO markAsDelivered(@PathVariable Long id) {
         return deliveryService.markAsDelivered(id);
     }
 }
