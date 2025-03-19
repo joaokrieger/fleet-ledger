@@ -1,16 +1,24 @@
 package br.com.jek.data.dto;
 
-import br.com.jek.model.Vehicle;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 public class VehicleDTO implements Serializable {
 
     private Long id;
+
+    @NotBlank(message = "The vehicle license plate cannot be blank")
     private String licensePlate;
+
+    @NotBlank(message = "The vehicle model cannot be blank")
     private String model;
+
+    @NotBlank(message = "The vehicle brand cannot be blank")
     private String brand;
+
+    @NotNull(message = "The vehicle year is required")
     private int year;
 
     public VehicleDTO() {
@@ -54,17 +62,5 @@ public class VehicleDTO implements Serializable {
 
     public void setYear(int year) {
         this.year = year;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Vehicle vehicle = (Vehicle) o;
-        return getYear() == vehicle.getYear() && Objects.equals(getId(), vehicle.getId()) && Objects.equals(getLicensePlate(), vehicle.getLicensePlate()) && Objects.equals(getModel(), vehicle.getModel()) && Objects.equals(getBrand(), vehicle.getBrand());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getLicensePlate(), getModel(), getBrand(), getYear());
     }
 }

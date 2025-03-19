@@ -1,14 +1,17 @@
 package br.com.jek.data.dto;
 
-import br.com.jek.model.Driver;
+import jakarta.validation.constraints.NotBlank;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 public class DriverDTO implements Serializable {
 
     private Long id;
+
+    @NotBlank(message = "The driver name cannot be blank")
     private String name;
+
+    @NotBlank(message = "The driver license number cannot be blank")
     private String licenseNumber;
 
     public DriverDTO() {
@@ -36,17 +39,5 @@ public class DriverDTO implements Serializable {
 
     public void setLicenseNumber(String licenseNumber) {
         this.licenseNumber = licenseNumber;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Driver driver = (Driver) o;
-        return Objects.equals(getId(), driver.getId()) && Objects.equals(getName(), driver.getName()) && Objects.equals(getLicenseNumber(), driver.getLicenseNumber());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getName(), getLicenseNumber());
     }
 }

@@ -2,6 +2,7 @@ package br.com.jek.controller;
 
 import br.com.jek.data.dto.VehicleDTO;
 import br.com.jek.service.VehicleService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,14 +31,14 @@ public class VehicleController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public VehicleDTO create(@RequestBody VehicleDTO vehicleDTO){
+    public VehicleDTO create(@RequestBody @Valid VehicleDTO vehicleDTO){
         return vehicleService.create(vehicleDTO);
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public VehicleDTO update(@RequestBody VehicleDTO vehicleDTO){
+    public VehicleDTO update(@RequestBody @Valid VehicleDTO vehicleDTO){
         return vehicleService.update(vehicleDTO);
     }
 

@@ -2,6 +2,7 @@ package br.com.jek.controller;
 
 import br.com.jek.data.dto.RouteDTO;
 import br.com.jek.service.RouteService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -29,13 +30,13 @@ public class RouteController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public RouteDTO create(@RequestBody RouteDTO routeDTO){
+    public RouteDTO create(@RequestBody @Valid RouteDTO routeDTO){
         return routeService.create(routeDTO);
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public RouteDTO update(@RequestBody RouteDTO routeDTO){
+    public RouteDTO update(@RequestBody @Valid RouteDTO routeDTO){
         return routeService.update(routeDTO);
     }
 

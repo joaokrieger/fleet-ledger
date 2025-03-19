@@ -2,6 +2,7 @@ package br.com.jek.controller;
 
 import br.com.jek.data.dto.DriverDTO;
 import br.com.jek.service.DriverService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,14 +31,14 @@ public class DriverController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public DriverDTO create(@RequestBody DriverDTO driverDTO){
+    public DriverDTO create(@RequestBody @Valid DriverDTO driverDTO){
         return driverService.create(driverDTO);
     }
 
     @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public DriverDTO update(@RequestBody DriverDTO driverDTO){
+    public DriverDTO update(@RequestBody @Valid DriverDTO driverDTO){
         return driverService.update(driverDTO);
     }
 

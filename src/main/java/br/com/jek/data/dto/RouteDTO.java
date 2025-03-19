@@ -1,14 +1,17 @@
 package br.com.jek.data.dto;
 
-import br.com.jek.model.Route;
+import jakarta.validation.constraints.NotBlank;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 public class RouteDTO implements Serializable {
 
     private Long id;
+
+    @NotBlank(message = "The route origin cannot be blank")
     private String origin;
+
+    @NotBlank(message = "The route destination cannot be blank")
     private String destination;
 
     public RouteDTO() {
@@ -36,17 +39,5 @@ public class RouteDTO implements Serializable {
 
     public void setDestination(String destination) {
         this.destination = destination;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Route route = (Route) o;
-        return Objects.equals(getId(), route.getId()) && Objects.equals(getOrigin(), route.getOrigin()) && Objects.equals(getDestination(), route.getDestination());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getOrigin(), getDestination());
     }
 }
