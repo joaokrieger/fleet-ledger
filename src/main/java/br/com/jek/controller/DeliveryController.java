@@ -45,4 +45,9 @@ public class DeliveryController {
         deliveryService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{id}/mark-as-delivered")
+    public DeliveryDTO markAsDelivered(@PathVariable Long id) {
+        return deliveryService.markAsDelivered(id);
+    }
 }

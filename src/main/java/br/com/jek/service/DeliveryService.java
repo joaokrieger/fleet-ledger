@@ -14,6 +14,7 @@ import br.com.jek.repository.VehicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,6 +58,8 @@ public class DeliveryService {
                 .orElseThrow(() -> new ResourceNotFoundException("Route not found!"));
 
         Delivery delivery = DeliveryMapper.toEntity(deliveryDTO, vehicle, driver, route);
+        delivery.setDepartureTime(LocalDateTime.now());
+
         return DeliveryMapper.toDTO(deliveryRepository.save(delivery));
     }
 
@@ -77,8 +80,6 @@ public class DeliveryService {
         delivery.setVehicle(vehicle);
         delivery.setDriver(driver);
         delivery.setRoute(route);
-        delivery.setArrivalTime(deliveryDTO.getArrivalTime());
-        delivery.setDepartureTime(deliveryDTO.getDepartureTime());
 
         return DeliveryMapper.toDTO(deliveryRepository.save(delivery));
     }
@@ -87,5 +88,12 @@ public class DeliveryService {
         Delivery delivery = deliveryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
         deliveryRepository.delete(delivery);
+    }
+
+    public DeliveryDTO markAsDelivered(Long id) {
+        Delivery delivery = deliveryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
+        delivery.setArrivalTime(LocalDateTime.now());
+        return DeliveryMapper.toDTO(deliveryRepository.save(delivery));
     }
 }
