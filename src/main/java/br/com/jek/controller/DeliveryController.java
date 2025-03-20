@@ -3,6 +3,7 @@ package br.com.jek.controller;
 import br.com.jek.data.dto.delivery.DeliveryRequestDTO;
 import br.com.jek.data.dto.delivery.DeliveryResponseDTO;
 import br.com.jek.service.DeliveryService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/delivery")
+@Tag(name = "Delivery", description = "Management of deliveries")
 public class DeliveryController {
 
     @Autowired

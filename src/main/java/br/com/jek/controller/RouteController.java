@@ -2,6 +2,7 @@ package br.com.jek.controller;
 
 import br.com.jek.data.dto.RouteDTO;
 import br.com.jek.service.RouteService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/route")
+@Tag(name = "Route", description = "Management of delivery routes")
 public class RouteController {
 
     @Autowired

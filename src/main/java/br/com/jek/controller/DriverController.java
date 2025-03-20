@@ -2,6 +2,7 @@ package br.com.jek.controller;
 
 import br.com.jek.data.dto.DriverDTO;
 import br.com.jek.service.DriverService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/driver")
+@Tag(name = "Driver", description = "Management of drivers")
 public class DriverController {
 
     @Autowired

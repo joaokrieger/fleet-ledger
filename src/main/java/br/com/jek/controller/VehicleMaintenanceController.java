@@ -3,6 +3,7 @@ package br.com.jek.controller;
 import br.com.jek.data.dto.vehicleMaintenance.VehicleMaintenanceRequestDTO;
 import br.com.jek.data.dto.vehicleMaintenance.VehicleMaintenanceResponseDTO;
 import br.com.jek.service.VehicleMaintenanceService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/vehicle-maintenance")
+@Tag(name = "Vehicle Maintenance", description = "Management of vehicle maintenance records")
 public class VehicleMaintenanceController {
 
     @Autowired
