@@ -22,7 +22,6 @@ public class DeliveryMapper {
     }
 
     public static DeliveryResponseDTO toDTO(Delivery delivery) {
-        DeliveryResponseDTO deliveryResponseDTO = mapper.map(delivery, DeliveryResponseDTO.class);
-        return deliveryResponseDTO;
+        return mapper.map(delivery, DeliveryResponseDTO.class);
     }
 }

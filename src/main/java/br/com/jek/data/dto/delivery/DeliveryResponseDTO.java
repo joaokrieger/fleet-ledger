@@ -4,9 +4,10 @@ import br.com.jek.model.Driver;
 import br.com.jek.model.Route;
 import br.com.jek.model.Vehicle;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class DeliveryResponseDTO {
+public class DeliveryResponseDTO implements Serializable {
 
     private Long id;
     private Vehicle vehicle;
