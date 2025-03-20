@@ -2,9 +2,9 @@ spring:
   application:
     name: fleet-ledger
   datasource:
-    url: jdbc:postgresql://localhost:5432/fleet_ledger?useTimezone=true&serverTimezone=UTC
-    username: postgres
-    password: 123456
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/fleet_ledger}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:123456}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
