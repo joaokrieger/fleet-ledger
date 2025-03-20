@@ -4,7 +4,6 @@ import br.com.jek.exception.ExceptionResponse;
 import br.com.jek.exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,8 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
 @RestController
@@ -42,18 +40,17 @@ public class CustomEntityResponseHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public final ResponseEntity<Map<String, Object>> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        Map<String, Object> errors = new HashMap<>();
-        errors.put("timestamp", new Date());
-        errors.put("status", HttpStatus.BAD_REQUEST.value());
-        errors.put("error", "Validation Error");
+    public final ResponseEntity<ExceptionResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
 
-        Map<String, String> fieldErrors = new HashMap<>();
-        for (FieldError error : ex.getBindingResult().getFieldErrors()) {
-            fieldErrors.put(error.getField(), error.getDefaultMessage());
-        }
-        errors.put("errors", fieldErrors);
+        String validationErrors = ex.getBindingResult().getFieldErrors().stream()
+                .map(error -> error.getField() + ": " + error.getDefaultMessage())
+                .collect(Collectors.joining(", "));
 
-        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+        ExceptionResponse response = new ExceptionResponse(
+                new Date(),
+                "Validation error",
+                validationErrors
+        );
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }
