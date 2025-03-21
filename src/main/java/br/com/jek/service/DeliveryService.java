@@ -91,10 +91,10 @@ public class DeliveryService {
         deliveryRepository.delete(delivery);
     }
 
-    public DeliveryResponseDTO markAsDelivered(Long id) {
+    public void markAsDelivered(Long id) {
         Delivery delivery = deliveryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
         delivery.setArrivalTime(LocalDateTime.now());
-        return DeliveryMapper.toDTO(deliveryRepository.save(delivery));
+        deliveryRepository.save(delivery);
     }
 }
