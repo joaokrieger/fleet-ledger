@@ -2,10 +2,11 @@ package br.com.jek.controller;
 
 import br.com.jek.data.dto.VehicleDTO;
 import br.com.jek.service.VehicleService;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,36 +17,55 @@ import java.util.List;
 @Tag(name = "Vehicle", description = "Vehicle management")
 public class VehicleController {
 
-    @Autowired
-    private VehicleService vehicleService;
+    private final VehicleService vehicleService;
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<VehicleDTO> findAll(){
-        return vehicleService.findAll();
+    public VehicleController(VehicleService vehicleService) {
+        this.vehicleService = vehicleService;
     }
 
-    @GetMapping(value = "/{id}",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public VehicleDTO findById(@PathVariable("id") Long id){
-        return vehicleService.findById(id);
+    @GetMapping
+    public ResponseEntity<List<VehicleDTO>> getAllVehicles(){
+        List<VehicleDTO> vehicles = vehicleService.findAll();
+        return ResponseEntity.ok(vehicles);
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public VehicleDTO create(@RequestBody @Valid VehicleDTO vehicleDTO){
-        return vehicleService.create(vehicleDTO);
+    @GetMapping(value = "/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Vehicle found successfully"),
+            @ApiResponse(responseCode = "404", description = "Vehicle not found")
+    })
+    public ResponseEntity<VehicleDTO> getVehicleById(@PathVariable("id") Long id){
+        VehicleDTO vehicle = vehicleService.findById(id);
+        return ResponseEntity.ok(vehicle);
     }
 
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public VehicleDTO update(@RequestBody @Valid VehicleDTO vehicleDTO){
-        return vehicleService.update(vehicleDTO);
+    @PostMapping
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Vehicle created successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid request body")
+    })
+    public ResponseEntity<VehicleDTO> createVehicle(@RequestBody @Valid VehicleDTO vehicleDTO){
+        VehicleDTO vehicle = vehicleService.create(vehicleDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(vehicle);
+    }
+
+    @PutMapping
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Vehicle updated successfully"),
+            @ApiResponse(responseCode = "404", description = "Vehicle not found"),
+            @ApiResponse(responseCode = "400", description = "Invalid request body")
+    })
+    public ResponseEntity<VehicleDTO> updateVehicle(@RequestBody @Valid VehicleDTO vehicleDTO){
+        VehicleDTO vehicle = vehicleService.update(vehicleDTO);
+        return ResponseEntity.ok(vehicle);
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") Long id){
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Vehicle deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Vehicle not found")
+    })
+    public ResponseEntity<Void> deleteVehicle(@PathVariable("id") Long id){
         vehicleService.delete(id);
         return ResponseEntity.noContent().build();
     }

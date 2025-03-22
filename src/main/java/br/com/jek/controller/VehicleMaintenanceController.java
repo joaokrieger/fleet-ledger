@@ -3,10 +3,11 @@ package br.com.jek.controller;
 import br.com.jek.data.dto.vehicleMaintenance.VehicleMaintenanceRequestDTO;
 import br.com.jek.data.dto.vehicleMaintenance.VehicleMaintenanceResponseDTO;
 import br.com.jek.service.VehicleMaintenanceService;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,34 +18,55 @@ import java.util.List;
 @Tag(name = "Vehicle Maintenance", description = "Management of vehicle maintenance records")
 public class VehicleMaintenanceController {
 
-    @Autowired
-    private VehicleMaintenanceService vehicleMaintenanceService;
+    private final VehicleMaintenanceService vehicleMaintenanceService;
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<VehicleMaintenanceResponseDTO> findAll(){
-        return vehicleMaintenanceService.findAll();
+    public VehicleMaintenanceController(VehicleMaintenanceService vehicleMaintenanceService) {
+        this.vehicleMaintenanceService = vehicleMaintenanceService;
     }
 
-    @GetMapping(value = "/{id}",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public VehicleMaintenanceResponseDTO findById(@PathVariable("id") Long id){
-        return vehicleMaintenanceService.findById(id);
+    @GetMapping
+    public ResponseEntity<List<VehicleMaintenanceResponseDTO>> getAllVehiclesMaintenances(){
+        List<VehicleMaintenanceResponseDTO> vehiclesMaintenances = vehicleMaintenanceService.findAll();
+        return ResponseEntity.ok(vehiclesMaintenances);
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public VehicleMaintenanceResponseDTO create(@RequestBody @Valid VehicleMaintenanceRequestDTO vehicleMaintenanceRequestDTO){
-        return vehicleMaintenanceService.create(vehicleMaintenanceRequestDTO);
+    @GetMapping(value = "/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Vehicle Maintenance found successfully"),
+            @ApiResponse(responseCode = "404", description = "Vehicle Maintenance not found")
+    })
+    public ResponseEntity<VehicleMaintenanceResponseDTO> getVehiclesMaintenanceById(@PathVariable("id") Long id){
+        VehicleMaintenanceResponseDTO vehicleMaintenance = vehicleMaintenanceService.findById(id);
+        return ResponseEntity.ok(vehicleMaintenance);
     }
 
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public VehicleMaintenanceResponseDTO update(@RequestBody @Valid VehicleMaintenanceRequestDTO vehicleMaintenanceRequestDTO){
-        return vehicleMaintenanceService.update(vehicleMaintenanceRequestDTO);
+    @PostMapping
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Vehicle Maintenance created successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid request body")
+    })
+    public ResponseEntity<VehicleMaintenanceResponseDTO> createVehiclesMaintenance(@RequestBody @Valid VehicleMaintenanceRequestDTO vehicleMaintenanceRequestDTO){
+        VehicleMaintenanceResponseDTO vehicleMaintenance = vehicleMaintenanceService.create(vehicleMaintenanceRequestDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(vehicleMaintenance);
+    }
+
+    @PutMapping
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Vehicle Maintenance updated successfully"),
+            @ApiResponse(responseCode = "404", description = "Vehicle Maintenance not found"),
+            @ApiResponse(responseCode = "400", description = "Invalid request body")
+    })
+    public ResponseEntity<VehicleMaintenanceResponseDTO> updateVehiclesMaintenance(@RequestBody @Valid VehicleMaintenanceRequestDTO vehicleMaintenanceRequestDTO){
+        VehicleMaintenanceResponseDTO vehicleMaintenance = vehicleMaintenanceService.update(vehicleMaintenanceRequestDTO);
+        return ResponseEntity.ok(vehicleMaintenance);
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id){
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Vehicle Maintenance deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Vehicle Maintenance not found")
+    })
+    public ResponseEntity<Void> deleteVehiclesMaintenance(@PathVariable Long id){
         vehicleMaintenanceService.delete(id);
         return ResponseEntity.noContent().build();
     }

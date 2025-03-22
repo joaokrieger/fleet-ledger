@@ -55,7 +55,7 @@ public class DriverController {
             @ApiResponse(responseCode = "404", description = "Driver not found"),
             @ApiResponse(responseCode = "400", description = "Invalid request body")
     })
-    public ResponseEntity<DriverDTO> update(@RequestBody @Valid DriverDTO driverDTO){
+    public ResponseEntity<DriverDTO> updateDriver(@RequestBody @Valid DriverDTO driverDTO){
         DriverDTO driver = driverService.update(driverDTO);
         return ResponseEntity.ok(driver);
     }
@@ -65,7 +65,7 @@ public class DriverController {
             @ApiResponse(responseCode = "204", description = "Driver deleted successfully"),
             @ApiResponse(responseCode = "404", description = "Driver not found")
     })
-    public ResponseEntity<Void> delete(@PathVariable("id") Long id){
+    public ResponseEntity<Void> deleteDriver(@PathVariable("id") Long id){
         driverService.delete(id);
         return ResponseEntity.noContent().build();
     }
