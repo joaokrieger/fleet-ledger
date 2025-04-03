@@ -1,10 +1,11 @@
 package br.com.jek.data.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
 
-public class RouteDTO implements Serializable {
+public class RouteDTO extends RepresentationModel<RouteDTO> implements Serializable {
 
     private Long id;
 

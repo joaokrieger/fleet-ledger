@@ -3,11 +3,12 @@ package br.com.jek.data.dto.delivery;
 import br.com.jek.model.Driver;
 import br.com.jek.model.Route;
 import br.com.jek.model.Vehicle;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class DeliveryResponseDTO implements Serializable {
+public class DeliveryResponseDTO extends RepresentationModel<DeliveryResponseDTO> implements Serializable {
 
     private Long id;
     private Vehicle vehicle;

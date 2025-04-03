@@ -35,7 +35,7 @@ public class VehicleMaintenanceController {
             @ApiResponse(responseCode = "200", description = "Vehicle Maintenance found successfully"),
             @ApiResponse(responseCode = "404", description = "Vehicle Maintenance not found")
     })
-    public ResponseEntity<VehicleMaintenanceResponseDTO> getVehiclesMaintenanceById(@PathVariable("id") Long id){
+    public ResponseEntity<VehicleMaintenanceResponseDTO> getVehicleMaintenanceById(@PathVariable("id") Long id){
         VehicleMaintenanceResponseDTO vehicleMaintenance = vehicleMaintenanceService.findById(id);
         return ResponseEntity.ok(vehicleMaintenance);
     }
@@ -45,7 +45,7 @@ public class VehicleMaintenanceController {
             @ApiResponse(responseCode = "201", description = "Vehicle Maintenance created successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid request body")
     })
-    public ResponseEntity<VehicleMaintenanceResponseDTO> createVehiclesMaintenance(@RequestBody @Valid VehicleMaintenanceRequestDTO vehicleMaintenanceRequestDTO){
+    public ResponseEntity<VehicleMaintenanceResponseDTO> createVehicleMaintenance(@RequestBody @Valid VehicleMaintenanceRequestDTO vehicleMaintenanceRequestDTO){
         VehicleMaintenanceResponseDTO vehicleMaintenance = vehicleMaintenanceService.create(vehicleMaintenanceRequestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(vehicleMaintenance);
     }
@@ -56,7 +56,7 @@ public class VehicleMaintenanceController {
             @ApiResponse(responseCode = "404", description = "Vehicle Maintenance not found"),
             @ApiResponse(responseCode = "400", description = "Invalid request body")
     })
-    public ResponseEntity<VehicleMaintenanceResponseDTO> updateVehiclesMaintenance(@RequestBody @Valid VehicleMaintenanceRequestDTO vehicleMaintenanceRequestDTO){
+    public ResponseEntity<VehicleMaintenanceResponseDTO> updateVehicleMaintenance(@RequestBody @Valid VehicleMaintenanceRequestDTO vehicleMaintenanceRequestDTO){
         VehicleMaintenanceResponseDTO vehicleMaintenance = vehicleMaintenanceService.update(vehicleMaintenanceRequestDTO);
         return ResponseEntity.ok(vehicleMaintenance);
     }
@@ -66,7 +66,7 @@ public class VehicleMaintenanceController {
             @ApiResponse(responseCode = "204", description = "Vehicle Maintenance deleted successfully"),
             @ApiResponse(responseCode = "404", description = "Vehicle Maintenance not found")
     })
-    public ResponseEntity<Void> deleteVehiclesMaintenance(@PathVariable Long id){
+    public ResponseEntity<Void> deleteVehicleMaintenance(@PathVariable Long id){
         vehicleMaintenanceService.delete(id);
         return ResponseEntity.noContent().build();
     }

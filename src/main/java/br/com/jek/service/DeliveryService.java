@@ -1,5 +1,6 @@
 package br.com.jek.service;
 
+import br.com.jek.controller.DeliveryController;
 import br.com.jek.data.dto.delivery.DeliveryRequestDTO;
 import br.com.jek.data.dto.delivery.DeliveryResponseDTO;
 import br.com.jek.exception.ResourceNotFoundException;
@@ -19,6 +20,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @Service
 public class DeliveryService {
 
@@ -35,16 +39,20 @@ public class DeliveryService {
     private RouteRepository routeRepository;
 
     public List<DeliveryResponseDTO> findAll() {
-        List<Delivery> deliveries = deliveryRepository.findAll();
-        return deliveries.stream()
+        List<DeliveryResponseDTO> deliveries = deliveryRepository.findAll()
+                .stream()
                 .map(DeliveryMapper::toDTO)
                 .collect(Collectors.toList());
+        deliveries.forEach(this::addHateoasLinks);
+        return deliveries;
     }
 
     public DeliveryResponseDTO findById(Long id) {
         var entity = deliveryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
-        return DeliveryMapper.toDTO(entity);
+        DeliveryResponseDTO deliveryResponseDTO = DeliveryMapper.toDTO(entity);
+        addHateoasLinks(deliveryResponseDTO);
+        return deliveryResponseDTO;
     }
 
     public DeliveryResponseDTO create(DeliveryRequestDTO deliveryRequestDTO) {
@@ -61,7 +69,9 @@ public class DeliveryService {
         Delivery delivery = DeliveryMapper.toEntity(deliveryRequestDTO, vehicle, driver, route);
         delivery.setDepartureTime(LocalDateTime.now());
 
-        return DeliveryMapper.toDTO(deliveryRepository.save(delivery));
+        DeliveryResponseDTO deliveryResponseDTO = DeliveryMapper.toDTO(deliveryRepository.save(delivery));
+        addHateoasLinks(deliveryResponseDTO);
+        return deliveryResponseDTO;
     }
 
     public DeliveryResponseDTO update(DeliveryRequestDTO deliveryRequestDTO) {
@@ -82,7 +92,9 @@ public class DeliveryService {
         delivery.setDriver(driver);
         delivery.setRoute(route);
 
-        return DeliveryMapper.toDTO(deliveryRepository.save(delivery));
+        DeliveryResponseDTO deliveryResponseDTO = DeliveryMapper.toDTO(deliveryRepository.save(delivery));
+        addHateoasLinks(deliveryResponseDTO);
+        return deliveryResponseDTO;
     }
 
     public void delete(Long id) {
@@ -96,5 +108,14 @@ public class DeliveryService {
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
         delivery.setArrivalTime(LocalDateTime.now());
         deliveryRepository.save(delivery);
+    }
+
+    private void addHateoasLinks(DeliveryResponseDTO deliveryResponseDTO){
+        deliveryResponseDTO.add(linkTo(methodOn(DeliveryController.class).getDeliveryById(deliveryResponseDTO.getId())).withSelfRel().withType("GET"));
+        deliveryResponseDTO.add(linkTo(methodOn(DeliveryController.class).getAllDeliveries()).withRel("getAllDeliveries").withType("GET"));
+        deliveryResponseDTO.add(linkTo(methodOn(DeliveryController.class).createDelivery(new DeliveryRequestDTO())).withRel("createDelivery").withType("POST"));
+        deliveryResponseDTO.add(linkTo(methodOn(DeliveryController.class).updateDelivery(new DeliveryRequestDTO())).withRel("updateDelivery").withType("PUT"));
+        deliveryResponseDTO.add(linkTo(methodOn(DeliveryController.class).deleteDelivery(deliveryResponseDTO.getId())).withRel("deleteDelivery").withType("DELETE"));
+        deliveryResponseDTO.add(linkTo(methodOn(DeliveryController.class).markDeliveryAsDelivered(deliveryResponseDTO.getId())).withRel("markDeliveryAsDelivered").withType("PUT"));
     }
 }

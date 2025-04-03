@@ -1,10 +1,11 @@
 package br.com.jek.data.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
 
-public class DriverDTO implements Serializable {
+public class DriverDTO extends RepresentationModel<DriverDTO> implements Serializable {
 
     private Long id;
 

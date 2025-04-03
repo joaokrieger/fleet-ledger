@@ -1,12 +1,13 @@
 package br.com.jek.data.dto.vehicleMaintenance;
 
 import br.com.jek.model.Vehicle;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class VehicleMaintenanceResponseDTO implements Serializable {
+public class VehicleMaintenanceResponseDTO extends RepresentationModel<VehicleMaintenanceResponseDTO> implements Serializable {
 
     private Long id;
     private Vehicle vehicle;
