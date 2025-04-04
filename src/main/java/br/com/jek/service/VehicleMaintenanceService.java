@@ -81,9 +81,20 @@ public class VehicleMaintenanceService {
 
     private void addHateoasLinks(VehicleMaintenanceResponseDTO vehicleMaintenanceResponseDTO){
         vehicleMaintenanceResponseDTO.add(linkTo(methodOn(VehicleMaintenanceController.class).getVehicleMaintenanceById(vehicleMaintenanceResponseDTO.getId())).withSelfRel().withType("GET"));
+        vehicleMaintenanceResponseDTO.add(linkTo(methodOn(VehicleMaintenanceController.class).getVehicleMaintenanceByLicensePlate(vehicleMaintenanceResponseDTO.getVehicle().getLicensePlate())).withRel("getVehicleMaintenanceByLicensePlate").withType("GET"));
         vehicleMaintenanceResponseDTO.add(linkTo(methodOn(VehicleMaintenanceController.class).getAllVehiclesMaintenances()).withRel("getAllVehiclesMaintenances").withType("GET"));
         vehicleMaintenanceResponseDTO.add(linkTo(methodOn(VehicleMaintenanceController.class).createVehicleMaintenance(new VehicleMaintenanceRequestDTO())).withRel("createVehicleMaintenance").withType("POST"));
         vehicleMaintenanceResponseDTO.add(linkTo(methodOn(VehicleMaintenanceController.class).updateVehicleMaintenance(new VehicleMaintenanceRequestDTO())).withRel("updateVehicleMaintenance").withType("PUT"));
         vehicleMaintenanceResponseDTO.add(linkTo(methodOn(VehicleMaintenanceController.class).deleteVehicleMaintenance(vehicleMaintenanceResponseDTO.getId())).withRel("deleteVehicleMaintenance").withType("DELETE"));
+    }
+
+    public List<VehicleMaintenanceResponseDTO> findByLicensePlate(String licensePlate) {
+        List<VehicleMaintenanceResponseDTO> vehicleMaintenances = vehicleMaintenanceRepository.findByVehicleLicensePlate(licensePlate)
+                .stream()
+                .map(VehicleMaintenanceMapper::toDTO)
+                .collect(Collectors.toList());
+
+        vehicleMaintenances.forEach(this::addHateoasLinks);
+        return vehicleMaintenances;
     }
 }

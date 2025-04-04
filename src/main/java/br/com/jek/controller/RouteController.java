@@ -69,4 +69,10 @@ public class RouteController {
         routeService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping(value = "/active")
+    public ResponseEntity<List<RouteDTO>> getActiveRoutes(){
+        List<RouteDTO> routes = routeService.findActiveRoutes();
+        return ResponseEntity.ok(routes);
+    }
 }

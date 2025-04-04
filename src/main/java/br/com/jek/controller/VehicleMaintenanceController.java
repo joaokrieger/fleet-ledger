@@ -70,4 +70,10 @@ public class VehicleMaintenanceController {
         vehicleMaintenanceService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/vehicle/{licensePlate}")
+    public ResponseEntity<List<VehicleMaintenanceResponseDTO>> getVehicleMaintenanceByLicensePlate(@PathVariable("licensePlate") String licensePlate){
+        List<VehicleMaintenanceResponseDTO> vehiclesMaintenances = vehicleMaintenanceService.findByLicensePlate(licensePlate);
+        return ResponseEntity.ok(vehiclesMaintenances);
+    }
 }

@@ -62,8 +62,15 @@ public class RouteService {
     private void addHateoasLinks(RouteDTO routeDTO){
         routeDTO.add(linkTo(methodOn(RouteController.class).getRouteById(routeDTO.getId())).withSelfRel().withType("GET"));
         routeDTO.add(linkTo(methodOn(RouteController.class).getAllRoutes()).withRel("getAllRoutes").withType("GET"));
+        routeDTO.add(linkTo(methodOn(RouteController.class).getActiveRoutes()).withRel("getActiveRoutes").withType("GET"));
         routeDTO.add(linkTo(methodOn(RouteController.class).createRoute(routeDTO)).withRel("createRoute").withType("POST"));
         routeDTO.add(linkTo(methodOn(RouteController.class).updateRoute(routeDTO)).withRel("updateRoute").withType("PUT"));
         routeDTO.add(linkTo(methodOn(RouteController.class).deleteRoute(routeDTO.getId())).withRel("deleteRoute").withType("DELETE"));
+    }
+
+    public List<RouteDTO> findActiveRoutes() {
+        List<RouteDTO> routes = parseListObjects(routeRepository.findActiveRoutes(), RouteDTO.class);
+        routes.forEach(this::addHateoasLinks);
+        return routes;
     }
 }
